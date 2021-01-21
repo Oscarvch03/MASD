@@ -5,7 +5,9 @@ x2_0 = 50;
 x3_0 = 40;
 x4_0 = 30;
 
-X0 = [0];
+prop = 1.1; % Proporcion de ingreso cada año con respecto al anterior
+
+X0 = [x1_0];
 X1 = [x1_0];
 X2 = [x2_0];
 X3 = [x3_0];
@@ -15,12 +17,14 @@ Xg = [0];
 y = 10;
 
 for k = 1:y
-    x0 = randi([60, 120]);
-    X0(k + 1) = x0;
-    X1(k + 1) = floor(x0 + X1(k) * (0.2) - X1(k) * (0.15));
-    X2(k + 1) = floor(X1(k) - X1(k) * (0.2) + X2(k) * (0.15) - X2(k) * (0.05));
+%     x0 = randi([60, 120]);
+    X0(k + 1) = X0(k) * prop;
+    
+    X1(k + 1) = floor(X0(k)                  + X1(k) * (0.2) - X1(k) * (0.15));
+    X2(k + 1) = floor(X1(k) - X1(k) * (0.2)  + X2(k) * (0.15) - X2(k) * (0.05));
     X3(k + 1) = floor(X2(k) - X2(k) * (0.15) + X3(k) * (0.1) - X3(k) * (0.02));
-    X4(k + 1) = floor(X3(k) - X3(k) * (0.1) + X4(k) * (0.05) - X4(k) * (0.01));
+    X4(k + 1) = floor(X3(k) - X3(k) * (0.1)  + X4(k) * (0.05) - X4(k) * (0.01));
+    
     Xg(k + 1) = floor(X4(k) - X4(k) * (0.05));
 end
 
@@ -38,6 +42,7 @@ plot(0:y, X2)
 plot(0:y, X3)
 plot(0:y, X4)
 legend({'Año 1 del Pensum', 'Año 2 del Pensum', 'Año 3 del Pensum', 'Año 4 del Pensum'}, 'Location', 'southeast')
+saveas(gcf, 'añodelpensum.png')
 
 others = false;
 
@@ -51,6 +56,7 @@ if(others)
     xlabel("Año k")
     ylabel("Cantidad de Estudiantes")
     plot(0:y, X0, 'r')
+    saveas(gcf, 'ingresoporaño.png')
 
     figure(3)
     hold on
@@ -60,6 +66,7 @@ if(others)
     xlabel("Año k")
     ylabel("Cantidad de Estudiantes")
     plot(0:y, Xg, 'g')
+    saveas(gcf, 'graduadosporaño.png')
 
     figure(4)
     hold on
@@ -69,5 +76,6 @@ if(others)
     xlabel("Año k")
     ylabel("Cantidad de Estudiantes")
     plot(0:y, XT, 'c')
+    saveas(gcf, 'totalporaño.png')
 
 end
